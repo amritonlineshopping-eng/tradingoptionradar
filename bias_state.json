@@ -1,0 +1,16 @@
+{
+  "nifty": {
+    "state": "SIDEWAYS",
+    "score": -1,
+    "last_change": "2026-05-06T13:45:00.795928",
+    "cooldown_until": "2026-05-06T13:50:00.795928",
+    "prev_state": "BEARISH"
+  },
+  "sensex": {
+    "state": "SIDEWAYS",
+    "score": 0,
+    "last_change": "2026-05-06T14:15:00.288648",
+    "cooldown_until": "2026-05-06T14:20:00.288648",
+    "prev_state": "BEARISH"
+  }
+}

@@ -1,0 +1,1563 @@
+{
+  "meta": {
+    "scanned_at": "2026-05-09T23:01:43.672344",
+    "scan_secs": 45.1,
+    "vix": 16.84,
+    "vix_env": "Favorable \u2014 good for buying",
+    "market_open": false,
+    "total": 4,
+    "strong": 4,
+    "lb": 3,
+    "sc": 0,
+    "sb": 1,
+    "news_count": 8
+  },
+  "expiry_calendar": {
+    "nifty": {
+      "weekly": [
+        {
+          "date": "2026-05-12",
+          "label": "12-MAY-26"
+        },
+        {
+          "date": "2026-05-19",
+          "label": "19-MAY-26"
+        },
+        {
+          "date": "2026-05-26",
+          "label": "26-MAY-26"
+        },
+        {
+          "date": "2026-06-02",
+          "label": "02-JUN-26"
+        },
+        {
+          "date": "2026-06-09",
+          "label": "09-JUN-26"
+        },
+        {
+          "date": "2026-06-16",
+          "label": "16-JUN-26"
+        },
+        {
+          "date": "2026-06-23",
+          "label": "23-JUN-26"
+        },
+        {
+          "date": "2026-06-30",
+          "label": "30-JUN-26"
+        }
+      ],
+      "monthly": [
+        {
+          "date": "2026-05-26",
+          "label": "26-MAY-26"
+        },
+        {
+          "date": "2026-06-30",
+          "label": "30-JUN-26"
+        },
+        {
+          "date": "2026-07-28",
+          "label": "28-JUL-26"
+        }
+      ],
+      "current": "12-MAY-26",
+      "expiry_day": "Tuesday"
+    },
+    "sensex": {
+      "weekly": [
+        {
+          "date": "2026-05-14",
+          "label": "14-MAY-26"
+        },
+        {
+          "date": "2026-05-21",
+          "label": "21-MAY-26"
+        },
+        {
+          "date": "2026-05-28",
+          "label": "28-MAY-26"
+        },
+        {
+          "date": "2026-06-04",
+          "label": "04-JUN-26"
+        },
+        {
+          "date": "2026-06-11",
+          "label": "11-JUN-26"
+        },
+        {
+          "date": "2026-06-18",
+          "label": "18-JUN-26"
+        },
+        {
+          "date": "2026-06-25",
+          "label": "25-JUN-26"
+        },
+        {
+          "date": "2026-07-02",
+          "label": "02-JUL-26"
+        }
+      ],
+      "monthly": [
+        {
+          "date": "2026-05-28",
+          "label": "28-MAY-26"
+        },
+        {
+          "date": "2026-06-25",
+          "label": "25-JUN-26"
+        },
+        {
+          "date": "2026-07-30",
+          "label": "30-JUL-26"
+        }
+      ],
+      "current": "14-MAY-26",
+      "expiry_day": "Thursday"
+    }
+  },
+  "nifty": {
+    "name": "NIFTY 50",
+    "ltp": 24176.15,
+    "chg_pts": -150.5,
+    "chg_pct": -0.62,
+    "open": 24233.65,
+    "high": 24253.8,
+    "low": 24126.65,
+    "vwap": 0.0,
+    "chain": {
+      "atm_strike": 24200,
+      "strikes": [
+        {
+          "strike": 23900,
+          "is_atm": false,
+          "CE": {
+            "oi": 0,
+            "oi_chg": 0,
+            "volume": 4878120,
+            "ltp": 347.1,
+            "bid": 346.45,
+            "ask": 348.25,
+            "iv": 18.83,
+            "delta": 0.762,
+            "sym": "NSE:NIFTY2651223900CE",
+            "gamma": 0.00075,
+            "theta": -24.5045,
+            "vega": 6.7825
+          },
+          "PE": {
+            "oi": 0,
+            "oi_chg": 0,
+            "volume": 120296345,
+            "ltp": 37.75,
+            "bid": 37.5,
+            "ask": 37.75,
+            "iv": 15.66,
+            "delta": -0.1966,
+            "sym": "NSE:NIFTY2651223900PE",
+            "gamma": 0.000807,
+            "theta": -16.7026,
+            "vega": 6.0726
+          }
+        },
+        {
+          "strike": 23950,
+          "is_atm": false,
+          "CE": {
+            "oi": 0,
+            "oi_chg": 0,
+            "volume": 3871270,
+            "ltp": 309.5,
+            "bid": 305.25,
+            "ask": 310,
+            "iv": 18.72,
+            "delta": 0.7237,
+            "sym": "NSE:NIFTY2651223950CE",
+            "gamma": 0.000815,
+            "theta": -25.9332,
+            "vega": 7.331
+          },
+          "PE": {
+            "oi": 0,
+            "oi_chg": 0,
+            "volume": 82617990,
+            "ltp": 47.5,
+            "bid": 47.5,
+            "ask": 47.8,
+            "iv": 15.46,
+            "delta": -0.2371,
+            "sym": "NSE:NIFTY2651223950PE",
+            "gamma": 0.000911,
+            "theta": -18.4695,
+            "vega": 6.7685
+          }
+        },
+        {
+          "strike": 24000,
+          "is_atm": false,
+          "CE": {
+            "oi": 0,
+            "oi_chg": 0,
+            "volume": 37473865,
+            "ltp": 270.1,
+            "bid": 268,
+            "ask": 270.2,
+            "iv": 18.14,
+            "delta": 0.6863,
+            "sym": "NSE:NIFTY2651224000CE",
+            "gamma": 0.000892,
+            "theta": -26.4052,
+            "vega": 7.7724
+          },
+          "PE": {
+            "oi": 0,
+            "oi_chg": 0,
+            "volume": 259810590,
+            "ltp": 60.1,
+            "bid": 59.75,
+            "ask": 60.1,
+            "iv": 15.37,
+            "delta": -0.2843,
+            "sym": "NSE:NIFTY2651224000PE",
+            "gamma": 0.001007,
+            "theta": -20.2742,
+            "vega": 7.4325
+          }
+        },
+        {
+          "strike": 24050,
+          "is_atm": false,
+          "CE": {
+            "oi": 0,
+            "oi_chg": 0,
+            "volume": 13756860,
+            "ltp": 235.85,
+            "bid": 233.7,
+            "ask": 236.6,
+            "iv": 17.97,
+            "delta": 0.6413,
+            "sym": "NSE:NIFTY2651224050CE",
+            "gamma": 0.000949,
+            "theta": -27.2461,
+            "vega": 8.1893
+          },
+          "PE": {
+            "oi": 0,
+            "oi_chg": 0,
+            "volume": 110859320,
+            "ltp": 74.6,
+            "bid": 74.8,
+            "ask": 75.1,
+            "iv": 15.22,
+            "delta": -0.3355,
+            "sym": "NSE:NIFTY2651224050PE",
+            "gamma": 0.001093,
+            "theta": -21.7251,
+            "vega": 7.9897
+          }
+        },
+        {
+          "strike": 24100,
+          "is_atm": false,
+          "CE": {
+            "oi": 0,
+            "oi_chg": 0,
+            "volume": 78153920,
+            "ltp": 202,
+            "bid": 202,
+            "ask": 202.85,
+            "iv": 17.58,
+            "delta": 0.5946,
+            "sym": "NSE:NIFTY2651224100CE",
+            "gamma": 0.001006,
+            "theta": -27.4201,
+            "vega": 8.497
+          },
+          "PE": {
+            "oi": 0,
+            "oi_chg": 0,
+            "volume": 219637405,
+            "ltp": 92.1,
+            "bid": 92.1,
+            "ask": 92.6,
+            "iv": 15.11,
+            "delta": -0.3912,
+            "sym": "NSE:NIFTY2651224100PE",
+            "gamma": 0.00116,
+            "theta": -22.8973,
+            "vega": 8.4169
+          }
+        },
+        {
+          "strike": 24150,
+          "is_atm": false,
+          "CE": {
+            "oi": 0,
+            "oi_chg": 0,
+            "volume": 119870010,
+            "ltp": 173.75,
+            "bid": 173,
+            "ask": 173.5,
+            "iv": 17.56,
+            "delta": 0.5436,
+            "sym": "NSE:NIFTY2651224150CE",
+            "gamma": 0.00103,
+            "theta": -27.7473,
+            "vega": 8.6918
+          },
+          "PE": {
+            "oi": 0,
+            "oi_chg": 0,
+            "volume": 214248190,
+            "ltp": 112.75,
+            "bid": 112.75,
+            "ask": 113.2,
+            "iv": 15.03,
+            "delta": -0.4501,
+            "sym": "NSE:NIFTY2651224150PE",
+            "gamma": 0.001202,
+            "theta": -23.69,
+            "vega": 8.6755
+          }
+        },
+        {
+          "strike": 24200,
+          "is_atm": true,
+          "CE": {
+            "oi": 0,
+            "oi_chg": 0,
+            "volume": 358688655,
+            "ltp": 146.6,
+            "bid": 146.65,
+            "ask": 147.2,
+            "iv": 17.38,
+            "delta": 0.4917,
+            "sym": "NSE:NIFTY2651224200CE",
+            "gamma": 0.001047,
+            "theta": -27.4139,
+            "vega": 8.7421
+          },
+          "PE": {
+            "oi": 0,
+            "oi_chg": 0,
+            "volume": 411465925,
+            "ltp": 136,
+            "bid": 136.05,
+            "ask": 136.55,
+            "iv": 14.92,
+            "delta": -0.5106,
+            "sym": "NSE:NIFTY2651224200PE",
+            "gamma": 0.00122,
+            "theta": -23.9584,
+            "vega": 8.7409
+          }
+        },
+        {
+          "strike": 24250,
+          "is_atm": false,
+          "CE": {
+            "oi": 0,
+            "oi_chg": 0,
+            "volume": 191410700,
+            "ltp": 122.55,
+            "bid": 122.6,
+            "ask": 123.35,
+            "iv": 17.25,
+            "delta": 0.4392,
+            "sym": "NSE:NIFTY2651224250CE",
+            "gamma": 0.001043,
+            "theta": -26.7154,
+            "vega": 8.6422
+          },
+          "PE": {
+            "oi": 0,
+            "oi_chg": 0,
+            "volume": 143141830,
+            "ltp": 162.45,
+            "bid": 161.7,
+            "ask": 162.3,
+            "iv": 14.82,
+            "delta": -0.5716,
+            "sym": "NSE:NIFTY2651224250PE",
+            "gamma": 0.001208,
+            "theta": -23.7387,
+            "vega": 8.6027
+          }
+        },
+        {
+          "strike": 24300,
+          "is_atm": false,
+          "CE": {
+            "oi": 0,
+            "oi_chg": 0,
+            "volume": 211513640,
+            "ltp": 101.7,
+            "bid": 101.7,
+            "ask": 102.1,
+            "iv": 17.19,
+            "delta": 0.3875,
+            "sym": "NSE:NIFTY2651224300CE",
+            "gamma": 0.001016,
+            "theta": -25.6994,
+            "vega": 8.3941
+          },
+          "PE": {
+            "oi": 0,
+            "oi_chg": 0,
+            "volume": 128939655,
+            "ltp": 190.5,
+            "bid": 190.55,
+            "ask": 190.85,
+            "iv": 14.54,
+            "delta": -0.6333,
+            "sym": "NSE:NIFTY2651224300PE",
+            "gamma": 0.001181,
+            "theta": -22.7565,
+            "vega": 8.2515
+          }
+        },
+        {
+          "strike": 24350,
+          "is_atm": false,
+          "CE": {
+            "oi": 0,
+            "oi_chg": 0,
+            "volume": 107559335,
+            "ltp": 83.9,
+            "bid": 83.5,
+            "ask": 83.9,
+            "iv": 17.2,
+            "delta": 0.3382,
+            "sym": "NSE:NIFTY2651224350CE",
+            "gamma": 0.00097,
+            "theta": -24.4156,
+            "vega": 8.0144
+          },
+          "PE": {
+            "oi": 0,
+            "oi_chg": 0,
+            "volume": 26233805,
+            "ltp": 223.2,
+            "bid": 222.3,
+            "ask": 223.2,
+            "iv": 14.46,
+            "delta": -0.6912,
+            "sym": "NSE:NIFTY2651224350PE",
+            "gamma": 0.001111,
+            "theta": -21.6194,
+            "vega": 7.7194
+          }
+        },
+        {
+          "strike": 24400,
+          "is_atm": false,
+          "CE": {
+            "oi": 0,
+            "oi_chg": 0,
+            "volume": 175966700,
+            "ltp": 67.65,
+            "bid": 67.65,
+            "ask": 68.05,
+            "iv": 17.09,
+            "delta": 0.2903,
+            "sym": "NSE:NIFTY2651224400CE",
+            "gamma": 0.000914,
+            "theta": -22.6166,
+            "vega": 7.5058
+          },
+          "PE": {
+            "oi": 0,
+            "oi_chg": 0,
+            "volume": 35485190,
+            "ltp": 258.55,
+            "bid": 256.4,
+            "ask": 258.05,
+            "iv": 14.36,
+            "delta": -0.7455,
+            "sym": "NSE:NIFTY2651224400PE",
+            "gamma": 0.001019,
+            "theta": -20.0829,
+            "vega": 7.0309
+          }
+        },
+        {
+          "strike": 24450,
+          "is_atm": false,
+          "CE": {
+            "oi": 0,
+            "oi_chg": 0,
+            "volume": 75729225,
+            "ltp": 55,
+            "bid": 54.8,
+            "ask": 55.2,
+            "iv": 17.16,
+            "delta": 0.2477,
+            "sym": "NSE:NIFTY2651224450CE",
+            "gamma": 0.000841,
+            "theta": -20.8767,
+            "vega": 6.9302
+          },
+          "PE": {
+            "oi": 0,
+            "oi_chg": 0,
+            "volume": 5904795,
+            "ltp": 294.35,
+            "bid": 291.9,
+            "ask": 295.7,
+            "iv": 13.89,
+            "delta": -0.8012,
+            "sym": "NSE:NIFTY2651224450PE",
+            "gamma": 0.000916,
+            "theta": -17.6577,
+            "vega": 6.1149
+          }
+        },
+        {
+          "strike": 24500,
+          "is_atm": false,
+          "CE": {
+            "oi": 0,
+            "oi_chg": 0,
+            "volume": 187334745,
+            "ltp": 44.25,
+            "bid": 44,
+            "ask": 44.35,
+            "iv": 17.22,
+            "delta": 0.2089,
+            "sym": "NSE:NIFTY2651224500CE",
+            "gamma": 0.000761,
+            "theta": -18.9636,
+            "vega": 6.2969
+          },
+          "PE": {
+            "oi": 0,
+            "oi_chg": 0,
+            "volume": 17622410,
+            "ltp": 333.75,
+            "bid": 331.6,
+            "ask": 333.55,
+            "iv": 13.53,
+            "delta": -0.8497,
+            "sym": "NSE:NIFTY2651224500PE",
+            "gamma": 0.000787,
+            "theta": -15.2573,
+            "vega": 5.1173
+          }
+        }
+      ],
+      "pcr": 0,
+      "max_pain": 23900,
+      "ce_wall": 23900,
+      "pe_wall": 23900,
+      "atm_ce": {
+        "oi": 0,
+        "oi_chg": 0,
+        "volume": 358688655,
+        "ltp": 146.6,
+        "bid": 146.65,
+        "ask": 147.2,
+        "iv": 17.38,
+        "delta": 0.4917,
+        "sym": "NSE:NIFTY2651224200CE",
+        "gamma": 0.001047,
+        "theta": -27.4139,
+        "vega": 8.7421
+      },
+      "atm_pe": {
+        "oi": 0,
+        "oi_chg": 0,
+        "volume": 411465925,
+        "ltp": 136,
+        "bid": 136.05,
+        "ask": 136.55,
+        "iv": 14.92,
+        "delta": -0.5106,
+        "sym": "NSE:NIFTY2651224200PE",
+        "gamma": 0.00122,
+        "theta": -23.9584,
+        "vega": 8.7409
+      },
+      "total_ce_oi": 0,
+      "total_pe_oi": 0,
+      "recommendation": {
+        "bias": "NO DATA",
+        "bias_note": "PCR 0 (SIDEWAYS). Range 23900\u201323900. Wait for breakout.",
+        "primary": {
+          "action": "Wait",
+          "strike": 24200,
+          "ltp": 0
+        },
+        "hedge": {},
+        "support": 23900,
+        "resistance": 23900,
+        "max_pain": 23900
+      },
+      "bias": "NO DATA",
+      "expiry_label": "12-MAY-26",
+      "expiry_date": "2026-05-12",
+      "working_format": 0,
+      "fetched_at": "23:01:48"
+    },
+    "support": 24252.9,
+    "resistance": 24253.8,
+    "pivot": 24367.5,
+    "r1": 24451.0,
+    "r2": 24565.6,
+    "s1": 24252.9,
+    "s2": 24169.4,
+    "intraday_support": 24126.65,
+    "intraday_resistance": 24253.8,
+    "expiry_day": "Tuesday",
+    "current_expiry": "12-MAY-26",
+    "weekly_expiries": [
+      {
+        "date": "2026-05-12",
+        "label": "12-MAY-26"
+      },
+      {
+        "date": "2026-05-19",
+        "label": "19-MAY-26"
+      },
+      {
+        "date": "2026-05-26",
+        "label": "26-MAY-26"
+      },
+      {
+        "date": "2026-06-02",
+        "label": "02-JUN-26"
+      },
+      {
+        "date": "2026-06-09",
+        "label": "09-JUN-26"
+      },
+      {
+        "date": "2026-06-16",
+        "label": "16-JUN-26"
+      },
+      {
+        "date": "2026-06-23",
+        "label": "23-JUN-26"
+      },
+      {
+        "date": "2026-06-30",
+        "label": "30-JUN-26"
+      }
+    ],
+    "monthly_expiries": [
+      {
+        "date": "2026-05-26",
+        "label": "26-MAY-26"
+      },
+      {
+        "date": "2026-06-30",
+        "label": "30-JUN-26"
+      },
+      {
+        "date": "2026-07-28",
+        "label": "28-JUL-26"
+      }
+    ],
+    "index_trade": {},
+    "scanned_at": "2026-05-09T23:01:48.020385"
+  },
+  "sensex": {
+    "name": "SENSEX",
+    "ltp": 77328.19,
+    "chg_pts": -516.33,
+    "chg_pct": -0.66,
+    "open": 77631.94,
+    "high": 77647.44,
+    "low": 77146.43,
+    "vwap": 0.0,
+    "chain": {
+      "atm_strike": 77300,
+      "strikes": [
+        {
+          "strike": 76700,
+          "is_atm": false,
+          "CE": {
+            "oi": 0,
+            "oi_chg": 0,
+            "volume": 58560,
+            "ltp": 1095.45,
+            "bid": 1073.5,
+            "ask": 1117.4,
+            "iv": 19.26,
+            "delta": 0.6601,
+            "sym": "BSE:SENSEX2651476700CE",
+            "gamma": 0.00021,
+            "theta": -72.7608,
+            "vega": 33.1601
+          },
+          "PE": {
+            "oi": 0,
+            "oi_chg": 0,
+            "volume": 3063420,
+            "ltp": 301.9,
+            "bid": 295.9,
+            "ask": 307.9,
+            "iv": 16.29,
+            "delta": -0.3142,
+            "sym": "BSE:SENSEX2651476700PE",
+            "gamma": 0.000241,
+            "theta": -56.6953,
+            "vega": 32.1149
+          }
+        },
+        {
+          "strike": 76800,
+          "is_atm": false,
+          "CE": {
+            "oi": 0,
+            "oi_chg": 0,
+            "volume": 118020,
+            "ltp": 1022.7,
+            "bid": 1002.2,
+            "ask": 1043.2,
+            "iv": 19.0,
+            "delta": 0.6403,
+            "sym": "BSE:SENSEX2651476800CE",
+            "gamma": 0.000217,
+            "theta": -72.9485,
+            "vega": 33.8487
+          },
+          "PE": {
+            "oi": 0,
+            "oi_chg": 0,
+            "volume": 3332080,
+            "ltp": 334.2,
+            "bid": 327.5,
+            "ask": 340.9,
+            "iv": 16.26,
+            "delta": -0.3385,
+            "sym": "BSE:SENSEX2651476800PE",
+            "gamma": 0.000249,
+            "theta": -58.5543,
+            "vega": 33.1075
+          }
+        },
+        {
+          "strike": 76900,
+          "is_atm": false,
+          "CE": {
+            "oi": 0,
+            "oi_chg": 0,
+            "volume": 180760,
+            "ltp": 958.95,
+            "bid": 939.8,
+            "ask": 978.1,
+            "iv": 18.95,
+            "delta": 0.6185,
+            "sym": "BSE:SENSEX2651476900CE",
+            "gamma": 0.000222,
+            "theta": -73.7267,
+            "vega": 34.5013
+          },
+          "PE": {
+            "oi": 0,
+            "oi_chg": 0,
+            "volume": 3424260,
+            "ltp": 368.15,
+            "bid": 360.8,
+            "ask": 375.5,
+            "iv": 16.2,
+            "delta": -0.3634,
+            "sym": "BSE:SENSEX2651476900PE",
+            "gamma": 0.000256,
+            "theta": -60.1014,
+            "vega": 33.9698
+          }
+        },
+        {
+          "strike": 77000,
+          "is_atm": false,
+          "CE": {
+            "oi": 0,
+            "oi_chg": 0,
+            "volume": 1600480,
+            "ltp": 884.1,
+            "bid": 866.4,
+            "ask": 901.8,
+            "iv": 18.52,
+            "delta": 0.598,
+            "sym": "BSE:SENSEX2651477000CE",
+            "gamma": 0.000231,
+            "theta": -72.9195,
+            "vega": 35.012
+          },
+          "PE": {
+            "oi": 0,
+            "oi_chg": 0,
+            "volume": 10890500,
+            "ltp": 403,
+            "bid": 394.9,
+            "ask": 411.1,
+            "iv": 16.1,
+            "delta": -0.3888,
+            "sym": "BSE:SENSEX2651477000PE",
+            "gamma": 0.000263,
+            "theta": -61.2857,
+            "vega": 34.6953
+          }
+        },
+        {
+          "strike": 77100,
+          "is_atm": false,
+          "CE": {
+            "oi": 0,
+            "oi_chg": 0,
+            "volume": 797860,
+            "ltp": 824.5,
+            "bid": 808.0,
+            "ask": 841.0,
+            "iv": 18.47,
+            "delta": 0.5748,
+            "sym": "BSE:SENSEX2651477100CE",
+            "gamma": 0.000234,
+            "theta": -73.2811,
+            "vega": 35.4694
+          },
+          "PE": {
+            "oi": 0,
+            "oi_chg": 0,
+            "volume": 4523400,
+            "ltp": 442.15,
+            "bid": 433.3,
+            "ask": 451.0,
+            "iv": 16.05,
+            "delta": -0.4152,
+            "sym": "BSE:SENSEX2651477100PE",
+            "gamma": 0.000268,
+            "theta": -62.4346,
+            "vega": 35.2884
+          }
+        },
+        {
+          "strike": 77200,
+          "is_atm": false,
+          "CE": {
+            "oi": 0,
+            "oi_chg": 0,
+            "volume": 2610500,
+            "ltp": 768.1,
+            "bid": 752.7,
+            "ask": 783.5,
+            "iv": 18.44,
+            "delta": 0.5513,
+            "sym": "BSE:SENSEX2651477200CE",
+            "gamma": 0.000237,
+            "theta": -73.4845,
+            "vega": 35.8078
+          },
+          "PE": {
+            "oi": 0,
+            "oi_chg": 0,
+            "volume": 6079480,
+            "ltp": 487.45,
+            "bid": 477.7,
+            "ask": 497.2,
+            "iv": 16.1,
+            "delta": -0.4425,
+            "sym": "BSE:SENSEX2651477200PE",
+            "gamma": 0.000271,
+            "theta": -63.7059,
+            "vega": 35.7305
+          }
+        },
+        {
+          "strike": 77300,
+          "is_atm": true,
+          "CE": {
+            "oi": 0,
+            "oi_chg": 0,
+            "volume": 6230280,
+            "ltp": 706.6,
+            "bid": 692.5,
+            "ask": 720.7,
+            "iv": 18.21,
+            "delta": 0.5277,
+            "sym": "BSE:SENSEX2651477300CE",
+            "gamma": 0.000241,
+            "theta": -72.7326,
+            "vega": 36.0194
+          },
+          "PE": {
+            "oi": 0,
+            "oi_chg": 0,
+            "volume": 10083180,
+            "ltp": 525,
+            "bid": 514.5,
+            "ask": 535.5,
+            "iv": 15.86,
+            "delta": -0.4694,
+            "sym": "BSE:SENSEX2651477300PE",
+            "gamma": 0.000277,
+            "theta": -63.6529,
+            "vega": 36.0
+          }
+        },
+        {
+          "strike": 77400,
+          "is_atm": false,
+          "CE": {
+            "oi": 0,
+            "oi_chg": 0,
+            "volume": 8769580,
+            "ltp": 655.2,
+            "bid": 642.1,
+            "ask": 668.3,
+            "iv": 18.19,
+            "delta": 0.5035,
+            "sym": "BSE:SENSEX2651477400CE",
+            "gamma": 0.000242,
+            "theta": -72.4927,
+            "vega": 36.1052
+          },
+          "PE": {
+            "oi": 0,
+            "oi_chg": 0,
+            "volume": 10755580,
+            "ltp": 574.85,
+            "bid": 563.4,
+            "ask": 586.3,
+            "iv": 15.88,
+            "delta": -0.4971,
+            "sym": "BSE:SENSEX2651477400PE",
+            "gamma": 0.000278,
+            "theta": -64.2836,
+            "vega": 36.1056
+          }
+        },
+        {
+          "strike": 77500,
+          "is_atm": false,
+          "CE": {
+            "oi": 0,
+            "oi_chg": 0,
+            "volume": 13185560,
+            "ltp": 605.25,
+            "bid": 593.1,
+            "ask": 617.4,
+            "iv": 18.14,
+            "delta": 0.4793,
+            "sym": "BSE:SENSEX2651477500CE",
+            "gamma": 0.000243,
+            "theta": -71.9011,
+            "vega": 36.0578
+          },
+          "PE": {
+            "oi": 0,
+            "oi_chg": 0,
+            "volume": 13754840,
+            "ltp": 626.85,
+            "bid": 614.3,
+            "ask": 639.4,
+            "iv": 15.89,
+            "delta": -0.5248,
+            "sym": "BSE:SENSEX2651477500PE",
+            "gamma": 0.000277,
+            "theta": -64.6009,
+            "vega": 36.0369
+          }
+        },
+        {
+          "strike": 77600,
+          "is_atm": false,
+          "CE": {
+            "oi": 0,
+            "oi_chg": 0,
+            "volume": 5514060,
+            "ltp": 563.55,
+            "bid": 552.3,
+            "ask": 574.8,
+            "iv": 18.25,
+            "delta": 0.4554,
+            "sym": "BSE:SENSEX2651477600CE",
+            "gamma": 0.00024,
+            "theta": -71.6548,
+            "vega": 35.8812
+          },
+          "PE": {
+            "oi": 0,
+            "oi_chg": 0,
+            "volume": 4376820,
+            "ltp": 674.1,
+            "bid": 660.6,
+            "ask": 687.6,
+            "iv": 15.68,
+            "delta": -0.5531,
+            "sym": "BSE:SENSEX2651477600PE",
+            "gamma": 0.000279,
+            "theta": -63.8495,
+            "vega": 35.7863
+          }
+        },
+        {
+          "strike": 77700,
+          "is_atm": false,
+          "CE": {
+            "oi": 0,
+            "oi_chg": 0,
+            "volume": 3679040,
+            "ltp": 516,
+            "bid": 505.7,
+            "ask": 526.3,
+            "iv": 18.14,
+            "delta": 0.4312,
+            "sym": "BSE:SENSEX2651477700CE",
+            "gamma": 0.000239,
+            "theta": -70.3662,
+            "vega": 35.568
+          },
+          "PE": {
+            "oi": 0,
+            "oi_chg": 0,
+            "volume": 2143860,
+            "ltp": 735.95,
+            "bid": 721.2,
+            "ask": 750.7,
+            "iv": 15.81,
+            "delta": -0.58,
+            "sym": "BSE:SENSEX2651477700PE",
+            "gamma": 0.000273,
+            "theta": -64.0513,
+            "vega": 35.3785
+          }
+        },
+        {
+          "strike": 77800,
+          "is_atm": false,
+          "CE": {
+            "oi": 0,
+            "oi_chg": 0,
+            "volume": 3777040,
+            "ltp": 480.3,
+            "bid": 470.7,
+            "ask": 489.9,
+            "iv": 18.29,
+            "delta": 0.4083,
+            "sym": "BSE:SENSEX2651477800CE",
+            "gamma": 0.000235,
+            "theta": -69.825,
+            "vega": 35.149
+          },
+          "PE": {
+            "oi": 0,
+            "oi_chg": 0,
+            "volume": 1679500,
+            "ltp": 791,
+            "bid": 775.2,
+            "ask": 806.8,
+            "iv": 15.67,
+            "delta": -0.6079,
+            "sym": "BSE:SENSEX2651477800PE",
+            "gamma": 0.000271,
+            "theta": -63.008,
+            "vega": 34.7769
+          }
+        },
+        {
+          "strike": 77900,
+          "is_atm": false,
+          "CE": {
+            "oi": 0,
+            "oi_chg": 0,
+            "volume": 2970840,
+            "ltp": 440,
+            "bid": 431.2,
+            "ask": 448.8,
+            "iv": 18.25,
+            "delta": 0.3849,
+            "sym": "BSE:SENSEX2651477900CE",
+            "gamma": 0.000231,
+            "theta": -68.3567,
+            "vega": 34.5941
+          },
+          "PE": {
+            "oi": 0,
+            "oi_chg": 0,
+            "volume": 866040,
+            "ltp": 853.15,
+            "bid": 836.1,
+            "ask": 870.2,
+            "iv": 15.65,
+            "delta": -0.6347,
+            "sym": "BSE:SENSEX2651477900PE",
+            "gamma": 0.000265,
+            "theta": -62.1451,
+            "vega": 34.027
+          }
+        }
+      ],
+      "pcr": 0,
+      "max_pain": 76700,
+      "ce_wall": 76700,
+      "pe_wall": 76700,
+      "atm_ce": {
+        "oi": 0,
+        "oi_chg": 0,
+        "volume": 6230280,
+        "ltp": 706.6,
+        "bid": 692.5,
+        "ask": 720.7,
+        "iv": 18.21,
+        "delta": 0.5277,
+        "sym": "BSE:SENSEX2651477300CE",
+        "gamma": 0.000241,
+        "theta": -72.7326,
+        "vega": 36.0194
+      },
+      "atm_pe": {
+        "oi": 0,
+        "oi_chg": 0,
+        "volume": 10083180,
+        "ltp": 525,
+        "bid": 514.5,
+        "ask": 535.5,
+        "iv": 15.86,
+        "delta": -0.4694,
+        "sym": "BSE:SENSEX2651477300PE",
+        "gamma": 0.000277,
+        "theta": -63.6529,
+        "vega": 36.0
+      },
+      "total_ce_oi": 0,
+      "total_pe_oi": 0,
+      "recommendation": {
+        "bias": "NO DATA",
+        "bias_note": "PCR 0 (SIDEWAYS). Range 76700\u201376700. Wait for breakout.",
+        "primary": {
+          "action": "Wait",
+          "strike": 77300,
+          "ltp": 0
+        },
+        "hedge": {},
+        "support": 76700,
+        "resistance": 76700,
+        "max_pain": 76700
+      },
+      "bias": "NO DATA",
+      "expiry_label": "14-MAY-26",
+      "expiry_date": "2026-05-14",
+      "working_format": 0,
+      "fetched_at": "23:01:54"
+    },
+    "support": 77604.64,
+    "resistance": 77647.44,
+    "pivot": 77994.67,
+    "r1": 78276.13,
+    "r2": 78666.16,
+    "s1": 77604.64,
+    "s2": 77323.18,
+    "intraday_support": 77146.43,
+    "intraday_resistance": 77647.44,
+    "expiry_day": "Thursday",
+    "current_expiry": "14-MAY-26",
+    "weekly_expiries": [
+      {
+        "date": "2026-05-14",
+        "label": "14-MAY-26"
+      },
+      {
+        "date": "2026-05-21",
+        "label": "21-MAY-26"
+      },
+      {
+        "date": "2026-05-28",
+        "label": "28-MAY-26"
+      },
+      {
+        "date": "2026-06-04",
+        "label": "04-JUN-26"
+      },
+      {
+        "date": "2026-06-11",
+        "label": "11-JUN-26"
+      },
+      {
+        "date": "2026-06-18",
+        "label": "18-JUN-26"
+      },
+      {
+        "date": "2026-06-25",
+        "label": "25-JUN-26"
+      },
+      {
+        "date": "2026-07-02",
+        "label": "02-JUL-26"
+      }
+    ],
+    "monthly_expiries": [
+      {
+        "date": "2026-05-28",
+        "label": "28-MAY-26"
+      },
+      {
+        "date": "2026-06-25",
+        "label": "25-JUN-26"
+      },
+      {
+        "date": "2026-07-30",
+        "label": "30-JUL-26"
+      }
+    ],
+    "index_trade": {},
+    "scanned_at": "2026-05-09T23:01:54.250937"
+  },
+  "stocks": [
+    {
+      "symbol": "SBIN",
+      "sector": "Banking",
+      "price": 1019.3,
+      "price_chg": -6.66,
+      "score": 8.0,
+      "oi_signal": "Short Buildup",
+      "oi_dir": "BEAR",
+      "oi_note": "Short Buildup \u2014 price falling with rising OI. Good for PE buying.",
+      "setup": "SMC Bearish Order Block",
+      "direction": "BEAR",
+      "in_kill_zone": false,
+      "strike": "1020 PE",
+      "option_type": "PE",
+      "expiry": "14-MAY-26",
+      "expiry_date": "2026-05-14",
+      "option_ltp": 38.3,
+      "last_ltp_update": "2026-05-09T23:02:02.988259",
+      "entry": 38.8,
+      "sl_price": 29.1,
+      "tgt_price": 53.3,
+      "sl_amt": 9.7,
+      "tgt_amt": 14.5,
+      "rr_ratio": "1:1.5",
+      "iv_rank": 7.7,
+      "vol_surge": 3.7,
+      "atr_pct": 0.64,
+      "vwap": 0.0,
+      "in_window": false,
+      "signal_time": "22:25",
+      "date": "2026-05-09",
+      "status_label": "Given at 22:25",
+      "locked": true,
+      "scanned_at": "2026-05-09T23:02:02.988285"
+    },
+    {
+      "symbol": "TITAN",
+      "sector": "Consumer",
+      "price": 4509,
+      "price_chg": 4.68,
+      "score": 8.0,
+      "oi_signal": "Long Buildup",
+      "oi_dir": "BULL",
+      "oi_note": "Long Buildup \u2014 price rising with rising OI. Good for CE buying.",
+      "setup": "SMC Bullish Order Block",
+      "direction": "BULL",
+      "in_kill_zone": false,
+      "strike": "4500 CE",
+      "option_type": "CE",
+      "expiry": "14-MAY-26",
+      "expiry_date": "2026-05-14",
+      "option_ltp": 120.6,
+      "last_ltp_update": "2026-05-09T23:02:24.039755",
+      "entry": 120.5,
+      "sl_price": 90.4,
+      "tgt_price": 165.7,
+      "sl_amt": 30.1,
+      "tgt_amt": 45.2,
+      "rr_ratio": "1:1.5",
+      "iv_rank": 7.6,
+      "vol_surge": 4.8,
+      "atr_pct": 0.64,
+      "vwap": 0.0,
+      "in_window": false,
+      "signal_time": "22:25",
+      "date": "2026-05-09",
+      "status_label": "Given at 22:25",
+      "locked": true,
+      "scanned_at": "2026-05-09T23:02:24.039779"
+    },
+    {
+      "symbol": "DABUR",
+      "sector": "FMCG",
+      "price": 487.7,
+      "price_chg": 3.77,
+      "score": 8.0,
+      "oi_signal": "Long Buildup",
+      "oi_dir": "BULL",
+      "oi_note": "OI shows Long Buildup but SMC Bearish Order Block signals bearish reversal. Technical setup dominates.",
+      "setup": "SMC Bearish Order Block",
+      "direction": "BEAR",
+      "in_kill_zone": false,
+      "strike": "490 PE",
+      "option_type": "PE",
+      "expiry": "14-MAY-26",
+      "expiry_date": "2026-05-14",
+      "option_ltp": 11.1,
+      "last_ltp_update": "2026-05-09T23:02:25.284352",
+      "entry": 11.1,
+      "sl_price": 8.3,
+      "tgt_price": 15.3,
+      "sl_amt": 2.8,
+      "tgt_amt": 4.2,
+      "rr_ratio": "1:1.5",
+      "iv_rank": 2.7,
+      "vol_surge": 5.9,
+      "atr_pct": 0.22,
+      "vwap": 0.0,
+      "in_window": false,
+      "signal_time": "22:25",
+      "date": "2026-05-09",
+      "status_label": "Given at 22:25",
+      "locked": true,
+      "scanned_at": "2026-05-09T23:02:25.284364"
+    },
+    {
+      "symbol": "TATACONSUM",
+      "sector": "FMCG",
+      "price": 1176.2,
+      "price_chg": 2.13,
+      "score": 7.5,
+      "oi_signal": "Long Buildup",
+      "oi_dir": "BULL",
+      "oi_note": "OI shows Long Buildup but SMC Bearish Order Block signals bearish reversal. Technical setup dominates.",
+      "setup": "SMC Bearish Order Block",
+      "direction": "BEAR",
+      "in_kill_zone": false,
+      "strike": "1180 PE",
+      "option_type": "PE",
+      "expiry": "14-MAY-26",
+      "expiry_date": "2026-05-14",
+      "option_ltp": 33,
+      "last_ltp_update": "2026-05-09T23:02:24.687488",
+      "entry": 33.0,
+      "sl_price": 24.8,
+      "tgt_price": 45.3,
+      "sl_amt": 8.2,
+      "tgt_amt": 12.3,
+      "rr_ratio": "1:1.5",
+      "iv_rank": 3.2,
+      "vol_surge": 2.7,
+      "atr_pct": 0.27,
+      "vwap": 0.0,
+      "in_window": false,
+      "signal_time": "22:25",
+      "date": "2026-05-09",
+      "status_label": "Given at 22:25",
+      "locked": true,
+      "scanned_at": "2026-05-09T23:02:24.687501"
+    }
+  ],
+  "news": [
+    {
+      "headline": "Health Officials Downplay Pandemic Risk From Cruise Hantavirus Outbreak",
+      "source": "Bloomberg Markets",
+      "link": "https://www.bloomberg.com/news/videos/2026-05-09/health-officials-downplay-risk-from-hantavirus-outbreak-video",
+      "published": "2026-05-09T17:09:07+00:00",
+      "time": "05:09 PM UTC",
+      "category": "F&O",
+      "impact": "MEDIUM",
+      "datetime_sort": "2026-05-09T17:09:07+00:00"
+    },
+    {
+      "headline": "China Summit Stays on Track Despite Iran Concerns",
+      "source": "Bloomberg Markets",
+      "link": "https://www.bloomberg.com/news/videos/2026-05-09/china-summit-stays-on-track-despite-iran-concerns-video",
+      "published": "2026-05-09T16:56:17+00:00",
+      "time": "04:56 PM UTC",
+      "category": "F&O",
+      "impact": "MEDIUM",
+      "datetime_sort": "2026-05-09T16:56:17+00:00"
+    },
+    {
+      "headline": "DOJ Probing Suspicious Oil Trades Tied To Iran War",
+      "source": "Bloomberg Markets",
+      "link": "https://www.bloomberg.com/news/videos/2026-05-09/doj-probing-suspicious-oil-trades-tied-to-iran-war-video",
+      "published": "2026-05-09T16:36:41+00:00",
+      "time": "04:36 PM UTC",
+      "category": "F&O",
+      "impact": "MEDIUM",
+      "datetime_sort": "2026-05-09T16:36:41+00:00"
+    },
+    {
+      "headline": "Daniel Dae Kim Make Korean Culture Global in Docuseries",
+      "source": "Bloomberg Markets",
+      "link": "https://www.bloomberg.com/news/videos/2026-05-09/daniel-dae-kim-make-korean-culture-global-in-docuseries-video",
+      "published": "2026-05-09T14:09:30+00:00",
+      "time": "02:09 PM UTC",
+      "category": "F&O",
+      "impact": "MEDIUM",
+      "datetime_sort": "2026-05-09T14:09:30+00:00"
+    },
+    {
+      "headline": "US Awaits Iranian Response After Hormuz Clashes Strain Ceasefire",
+      "source": "Bloomberg Markets",
+      "link": "https://www.bloomberg.com/news/videos/2026-05-09/us-awaits-response-after-hormuz-clashes-strain-ceasefire-video",
+      "published": "2026-05-09T14:00:29+00:00",
+      "time": "02:00 PM UTC",
+      "category": "F&O",
+      "impact": "MEDIUM",
+      "datetime_sort": "2026-05-09T14:00:29+00:00"
+    },
+    {
+      "headline": "Earnings Bonanza That No One Saw Coming Fuels Stocks\u2019 Record Run",
+      "source": "Bloomberg Markets",
+      "link": "https://www.bloomberg.com/news/articles/2026-05-09/earnings-bonanza-that-no-one-saw-coming-fuels-stocks-record-run",
+      "published": "2026-05-09T13:00:00+00:00",
+      "time": "01:00 PM UTC",
+      "category": "MACRO",
+      "impact": "HIGH",
+      "datetime_sort": "2026-05-09T13:00:00+00:00"
+    },
+    {
+      "headline": "Iran War Is Draining World\u2019s Oil Buffer at an Unprecedented Pace",
+      "source": "Bloomberg Markets",
+      "link": "https://www.bloomberg.com/news/articles/2026-05-09/iran-war-is-draining-world-s-oil-buffer-at-unprecedented-pace",
+      "published": "2026-05-09T12:30:00+00:00",
+      "time": "12:30 PM UTC",
+      "category": "F&O",
+      "impact": "MEDIUM",
+      "datetime_sort": "2026-05-09T12:30:00+00:00"
+    },
+    {
+      "headline": "\u2018It\u2019s Not Because They Want to Be Friends\u2019: Brilliant on What to Expect From the Trump-Xi Summit",
+      "source": "Bloomberg Markets",
+      "link": "https://www.bloomberg.com/news/videos/2026-05-09/what-to-expect-from-the-trump-xi-summit-video",
+      "published": "2026-05-09T12:04:23+00:00",
+      "time": "12:04 PM UTC",
+      "category": "F&O",
+      "impact": "MEDIUM",
+      "datetime_sort": "2026-05-09T12:04:23+00:00"
+    }
+  ],
+  "today_trades": {
+    "SBIN_1020_PE_2026-05-09": {
+      "symbol": "SBIN",
+      "direction": "BEAR",
+      "strike": "1020 PE",
+      "setup": "SMC Bearish Order Block",
+      "entry": 38.8,
+      "sl_price": 29.1,
+      "tgt_price": 53.3,
+      "given_at": "22:25",
+      "date": "2026-05-09",
+      "expiry": "14-MAY-26",
+      "expiry_date": "2026-05-14",
+      "sector": "Banking",
+      "status": "ACTIVE",
+      "hit_at": null,
+      "score": 8.0,
+      "oi_signal": "Short Buildup",
+      "oi_dir": "BEAR",
+      "oi_note": "Short Buildup \u2014 price falling with rising OI. Good for PE buying.",
+      "in_kill_zone": false,
+      "option_type": "PE",
+      "option_ltp": 38.3,
+      "last_ltp_update": "2026-05-09T23:02:02.971303",
+      "sl_amt": 9.7,
+      "tgt_amt": 14.5,
+      "rr_ratio": "1:1.5",
+      "iv_rank": 7.7,
+      "vol_surge": 3.7,
+      "atr_pct": 0.64,
+      "vwap": 0.0,
+      "in_window": false
+    },
+    "TITAN_4500_CE_2026-05-09": {
+      "symbol": "TITAN",
+      "direction": "BULL",
+      "strike": "4500 CE",
+      "setup": "SMC Bullish Order Block",
+      "entry": 120.5,
+      "sl_price": 90.4,
+      "tgt_price": 165.7,
+      "given_at": "22:25",
+      "date": "2026-05-09",
+      "expiry": "14-MAY-26",
+      "expiry_date": "2026-05-14",
+      "sector": "Consumer",
+      "status": "ACTIVE",
+      "hit_at": null,
+      "score": 8.0,
+      "oi_signal": "Long Buildup",
+      "oi_dir": "BULL",
+      "oi_note": "Long Buildup \u2014 price rising with rising OI. Good for CE buying.",
+      "in_kill_zone": false,
+      "option_type": "CE",
+      "option_ltp": 120.6,
+      "last_ltp_update": "2026-05-09T23:02:24.026837",
+      "sl_amt": 30.1,
+      "tgt_amt": 45.2,
+      "rr_ratio": "1:1.5",
+      "iv_rank": 7.6,
+      "vol_surge": 4.8,
+      "atr_pct": 0.64,
+      "vwap": 0.0,
+      "in_window": false
+    },
+    "TATACONSUM_1180_PE_2026-05-09": {
+      "symbol": "TATACONSUM",
+      "direction": "BEAR",
+      "strike": "1180 PE",
+      "setup": "SMC Bearish Order Block",
+      "entry": 33.0,
+      "sl_price": 24.8,
+      "tgt_price": 45.3,
+      "given_at": "22:25",
+      "date": "2026-05-09",
+      "expiry": "14-MAY-26",
+      "expiry_date": "2026-05-14",
+      "sector": "FMCG",
+      "status": "ACTIVE",
+      "hit_at": null,
+      "score": 7.5,
+      "oi_signal": "Long Buildup",
+      "oi_dir": "BULL",
+      "oi_note": "OI shows Long Buildup but SMC Bearish Order Block signals bearish reversal. Technical setup dominates.",
+      "in_kill_zone": false,
+      "option_type": "PE",
+      "option_ltp": 33,
+      "last_ltp_update": "2026-05-09T23:02:24.675553",
+      "sl_amt": 8.2,
+      "tgt_amt": 12.3,
+      "rr_ratio": "1:1.5",
+      "iv_rank": 3.2,
+      "vol_surge": 2.7,
+      "atr_pct": 0.27,
+      "vwap": 0.0,
+      "in_window": false
+    },
+    "DABUR_490_PE_2026-05-09": {
+      "symbol": "DABUR",
+      "direction": "BEAR",
+      "strike": "490 PE",
+      "setup": "SMC Bearish Order Block",
+      "entry": 11.1,
+      "sl_price": 8.3,
+      "tgt_price": 15.3,
+      "given_at": "22:25",
+      "date": "2026-05-09",
+      "expiry": "14-MAY-26",
+      "expiry_date": "2026-05-14",
+      "sector": "FMCG",
+      "status": "ACTIVE",
+      "hit_at": null,
+      "score": 8.0,
+      "oi_signal": "Long Buildup",
+      "oi_dir": "BULL",
+      "oi_note": "OI shows Long Buildup but SMC Bearish Order Block signals bearish reversal. Technical setup dominates.",
+      "in_kill_zone": false,
+      "option_type": "PE",
+      "option_ltp": 11.1,
+      "last_ltp_update": "2026-05-09T23:02:25.268670",
+      "sl_amt": 2.8,
+      "tgt_amt": 4.2,
+      "rr_ratio": "1:1.5",
+      "iv_rank": 2.7,
+      "vol_surge": 5.9,
+      "atr_pct": 0.22,
+      "vwap": 0.0,
+      "in_window": false
+    }
+  }
+}

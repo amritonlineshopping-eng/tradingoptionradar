@@ -1,0 +1,52 @@
+{
+  "nifty": {
+    "score": -1,
+    "state": "SIDEWAYS",
+    "bias": "SIDEWAYS",
+    "execution_mode": "NEUTRAL \u2014 no new entries, close open scalps",
+    "pcr": 0.0,
+    "vwap": 24197.05,
+    "ltp": 24339.05,
+    "ema9": 24252.91,
+    "ema21": 24175.78,
+    "breakdown": {
+      "pcr": "-2 (PCR=0.00 bearish)",
+      "vwap": "+1 (LTP 24339.05 > VWAP 24197.05)",
+      "ema": "+1 (9EMA 24252.91 > 21EMA 24175.78)",
+      "structure": "-1 (Lower High + Lower Low)"
+    },
+    "support": 23997.9,
+    "resistance": 24356.5,
+    "max_pain": 24050,
+    "bias_note": "Score -1: -2 (PCR=0.00 bearish); +1 (LTP 24339.05 > VWAP 24197.05); +1 (9EMA 24252.91 > 21EMA 24175.78); -1 (Lower High + Lower Low)",
+    "updated_at": "15:30",
+    "bias_shift": false,
+    "in_cooldown": false
+  },
+  "sensex": {
+    "score": 0,
+    "state": "SIDEWAYS",
+    "bias": "SIDEWAYS",
+    "execution_mode": "NEUTRAL \u2014 no new entries, close open scalps",
+    "pcr": 0.0,
+    "vwap": 77441.65,
+    "ltp": 78004.5,
+    "ema9": 77664.3,
+    "ema21": 77408.03,
+    "breakdown": {
+      "pcr": "-2 (PCR=0.00 bearish)",
+      "vwap": "+1 (LTP 78004.5 > VWAP 77441.65)",
+      "ema": "+1 (9EMA 77664.3 > 21EMA 77408.03)",
+      "structure": "0 (Mixed candle structure)"
+    },
+    "support": 76773.25,
+    "resistance": 78022.78,
+    "max_pain": 77400,
+    "bias_note": "Score +0: -2 (PCR=0.00 bearish); +1 (LTP 78004.5 > VWAP 77441.65); +1 (9EMA 77664.3 > 21EMA 77408.03); 0 (Mixed candle structure)",
+    "updated_at": "15:30",
+    "bias_shift": false,
+    "in_cooldown": false
+  },
+  "updated_at": "2026-05-06T15:30:05.265806",
+  "engine": "15min_bias_engine"
+}

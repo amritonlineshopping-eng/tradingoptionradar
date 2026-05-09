@@ -1,0 +1,13 @@
+{
+  "gift_nifty": {
+    "price": 24176.15,
+    "prev_close": 24326.65,
+    "gap_pts": -150.5,
+    "gap_pct": -0.62,
+    "signal": "GAP_DOWN",
+    "strength": "MODERATE",
+    "days_to_exp": 3,
+    "updated_at": "23:47"
+  },
+  "cache_updated": "2026-05-09T23:47:29.990551"
+}
