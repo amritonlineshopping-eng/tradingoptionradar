@@ -515,76 +515,6 @@ def _sector_fallback() -> list:
     return sectors
 
 
-# ─── 6. GIFT NIFTY (PRE-MARKET SIGNAL) ───────────────────────────────────────
-
-def fetch_gift_nifty() -> dict:
-    """
-    Fetch SGX/GIFT Nifty futures price for pre-market gap analysis.
-    Uses Yahoo Finance (free, no auth).
-    Returns gap signal: gap_up/gap_down/flat + expected open.
-    """
-    try:
-        # Try Yahoo Finance for GIFT Nifty (ticker: ^NSEI or NIFTY futures)
-        url = "https://query1.finance.yahoo.com/v8/finance/chart/%5ENSEI?interval=1m&range=1d"
-        resp = requests.get(url, timeout=10,
-                            headers={"User-Agent": "Mozilla/5.0"})
-        if resp.status_code != 200:
-            return _gift_fallback()
-
-        result = resp.json().get("chart", {}).get("result", [])
-        if not result:
-            return _gift_fallback()
-
-        meta = result[0].get("meta", {})
-        current = float(meta.get("regularMarketPrice", 0) or 0)
-        prev_close = float(meta.get("previousClose", 0) or 0)
-
-        if current == 0 or prev_close == 0:
-            return _gift_fallback()
-
-        gap_pts = round(current - prev_close, 2)
-        gap_pct = round(gap_pts / prev_close * 100, 2)
-
-        if gap_pct > 0.3:      signal = "GAP_UP"
-        elif gap_pct < -0.3:   signal = "GAP_DOWN"
-        else:                  signal = "FLAT"
-
-        strength = "STRONG" if abs(gap_pct) > 0.8 else ("MODERATE" if abs(gap_pct) > 0.3 else "WEAK")
-
-        # Expiry countdown
-        now = datetime.now()
-        expiry_funcs = None
-        try:
-            import scanner as sc
-            next_expiry = sc.get_nifty_expiries(1)[0]
-            days_to_exp = (next_expiry - date.today()).days
-        except:
-            days_to_exp = 0
-
-        return {
-            "price":       round(current, 2),
-            "prev_close":  round(prev_close, 2),
-            "gap_pts":     gap_pts,
-            "gap_pct":     gap_pct,
-            "signal":      signal,
-            "strength":    strength,
-            "days_to_exp": days_to_exp,
-            "updated_at":  datetime.now().strftime("%H:%M"),
-        }
-
-    except Exception as e:
-        log.warning(f"GIFT Nifty fetch error: {e}")
-        return _gift_fallback()
-
-
-def _gift_fallback() -> dict:
-    return {
-        "price": 0, "prev_close": 0, "gap_pts": 0, "gap_pct": 0,
-        "signal": "UNKNOWN", "strength": "WEAK", "days_to_exp": 0,
-        "updated_at": datetime.now().strftime("%H:%M"),
-    }
-
-
 # ─── COMBINED ANALYTICS CACHE ─────────────────────────────────────────────────
 
 def _load_cache() -> dict:
@@ -658,14 +588,13 @@ def run_analytics_loop(fyers_getter):
     Schedule:
     - Market breadth: every 5 min
     - Sector heatmap: every 10 min
-    - GIFT Nifty: every 2 min (pre-market), every 15 min (market hours)
     - IV ranks: every 15 min during market hours (uses existing chains)
+    Note: GIFT Nifty is now handled by tv_provider.py (TradingView feed).
     """
     log.info("Analytics engine started.")
 
     last_breadth  = datetime.min
     last_sector   = datetime.min
-    last_gift     = datetime.min
     last_iv       = datetime.min
 
     while True:
@@ -673,15 +602,7 @@ def run_analytics_loop(fyers_getter):
             now = datetime.now()
             cache = _load_cache()
             updated = False
-
-            # GIFT Nifty — pre-market every 2 min, else every 15 min
             total_mins = now.hour * 60 + now.minute
-            gift_interval = 2 if total_mins < 9 * 60 + 15 else 15
-            if (now - last_gift).total_seconds() > gift_interval * 60:
-                log.debug("Analytics: fetching GIFT Nifty...")
-                cache["gift_nifty"] = fetch_gift_nifty()
-                last_gift  = now
-                updated    = True
 
             # Market breadth — every 5 min during market hours
             if (9 * 60 + 15) <= total_mins <= (15 * 60 + 35):

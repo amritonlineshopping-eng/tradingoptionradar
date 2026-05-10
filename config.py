@@ -12,6 +12,12 @@ SECRET_KEY   = "O0US1KYW9C"
 REDIRECT_URI = "http://127.0.0.1:5000"
 
 # ------------------------------------------------------------------------------
+# TRADINGVIEW CREDENTIALS  (used by tv_provider.py for live index data)
+# ------------------------------------------------------------------------------
+TV_USERNAME = "amrittrades2026@gmail.com"   # your TradingView username / email
+TV_PASSWORD = "Password27=23=50"   # your TradingView password
+
+# ------------------------------------------------------------------------------
 # FILE PATHS
 # ------------------------------------------------------------------------------
 BASE_DIR          = os.path.dirname(os.path.abspath(__file__))

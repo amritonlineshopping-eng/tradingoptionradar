@@ -6,8 +6,9 @@ main.py — Options Radar v10
 """
 import os, sys, json, time, threading, logging, webbrowser
 from datetime import datetime
+import requests
 import uvicorn
-import config, scanner, trade_tracker, learner, bias_engine, strategy_hougaard, news_fetcher, analytics
+import config, scanner, trade_tracker, learner, bias_engine, strategy_hougaard, news_fetcher, analytics, tv_provider
 import server as srv
 
 logging.basicConfig(level=logging.INFO,
@@ -19,6 +20,78 @@ BASE_DIR    = os.path.dirname(os.path.abspath(__file__))
 QUOTES_FILE = os.path.join(BASE_DIR, "index_quotes.json")
 BIAS_FILE   = os.path.join(BASE_DIR, "index_bias.json")
 INDEX_SYMS  = [config.NIFTY_SYMBOL, config.SENSEX_SYMBOL, config.VIX_SYMBOL]
+
+# ─── FREE INDEX QUOTES (NSE + yfinance) ───────────────────────────────────────
+_nse_session   = None
+_nse_last_init = 0.0
+_NSE_HEADERS   = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0",
+    "Accept": "*/*",
+    "Accept-Language": "en-US,en;q=0.9",
+    "Referer": "https://www.nseindia.com",
+}
+
+def _get_nse_session(force=False):
+    global _nse_session, _nse_last_init
+    if force or _nse_session is None or (time.time() - _nse_last_init) > 300:
+        s = requests.Session()
+        s.headers.update(_NSE_HEADERS)
+        s.get("https://www.nseindia.com", timeout=8)
+        _nse_session = s
+        _nse_last_init = time.time()
+    return _nse_session
+
+def _fetch_free_quotes():
+    """Fetch Nifty50+VIX from NSE and Sensex from yfinance."""
+    global _nse_session, _nse_last_init
+    result = {}
+
+    # Nifty50 from NSE
+    try:
+        s = _get_nse_session()
+        r = s.get("https://www.nseindia.com/api/equity-stockIndices?index=NIFTY%2050", timeout=4)
+        r.raise_for_status()
+        d = r.json()["data"][0]
+        result["nifty"] = {
+            "ltp":        round(float(d["lastPrice"]), 2),
+            "chg_pts":    round(float(d["change"]), 2),
+            "chg_pct":    round(float(d["pChange"]), 2),
+            "high":       round(float(d["high"]), 2),
+            "low":        round(float(d["low"]), 2),
+            "prev_close": round(float(d["previousClose"]), 2),
+        }
+    except Exception as e:
+        log.debug(f"NSE Nifty error: {e}")
+        _nse_session = None; _nse_last_init = 0.0  # force cookie refresh
+
+    # VIX from NSE
+    try:
+        s = _get_nse_session()
+        r = s.get("https://www.nseindia.com/api/equity-stockIndices?index=INDIA%20VIX", timeout=4)
+        r.raise_for_status()
+        d = r.json()["data"][0]
+        result["vix"] = {"ltp": round(float(d["lastPrice"]), 2)}
+    except Exception as e:
+        log.debug(f"NSE VIX error: {e}")
+
+    # Sensex from yfinance (BSE index, not on NSE)
+    try:
+        import yfinance as yf
+        info = yf.Ticker("^BSESN").fast_info
+        ltp = round(float(info.get("lastPrice") or info.get("previousClose") or 0), 2)
+        pc  = round(float(info.get("previousClose") or 0), 2)
+        result["sensex"] = {
+            "ltp":        ltp,
+            "chg_pts":    round(ltp - pc, 2) if pc else 0,
+            "chg_pct":    round((ltp - pc) / pc * 100, 2) if pc else 0,
+            "high":       round(float(info.get("dayHigh") or 0), 2),
+            "low":        round(float(info.get("dayLow") or 0), 2),
+            "prev_close": pc,
+        }
+    except Exception as e:
+        log.debug(f"yfinance Sensex error: {e}")
+
+    return result
 
 
 # ─── THREADS ──────────────────────────────────────────────────────────────────
@@ -55,9 +128,9 @@ def run_web_server():
                 log_level="warning")
 
 
-def run_fast_quotes(fyers):
-    """Updates index_quotes.json every 5 seconds during market hours."""
-    log.info("Fast quotes started (5s).")
+def run_fast_quotes():
+    """Updates index_quotes.json every 3 seconds using NSE + yfinance (no Fyers)."""
+    log.info("Fast quotes started (3s) — NSE + yfinance.")
     last = {
         "nifty":  {"ltp": 0, "chg_pts": 0, "chg_pct": 0, "high": 0, "low": 0},
         "sensex": {"ltp": 0, "chg_pts": 0, "chg_pct": 0, "high": 0, "low": 0},
@@ -65,34 +138,16 @@ def run_fast_quotes(fyers):
     }
     while True:
         try:
-            is_open = scanner._market_open()
-            if is_open:
-                qs = scanner.fetch_quotes(fyers, INDEX_SYMS, batch_size=10, delay=0.1)
-                for sym, key in [(config.NIFTY_SYMBOL, "nifty"),
-                                 (config.SENSEX_SYMBOL, "sensex")]:
-                    q = qs.get(sym, {})
-                    # Use ltp if available; after market close Fyers may return ltp=0
-                    # but prev_close always has the last known price
-                    raw_ltp = q.get("ltp", 0)
-                    pc      = q.get("prev_close", 0)
-                    ltp     = raw_ltp if raw_ltp > 0 else pc  # fallback to prev_close
-                    if ltp > 0:
-                        pts = round(ltp - pc, 2) if pc > 0 else 0
-                        pct = round((pts / pc * 100) if pc > 0 else 0, 2)
-                        last[key] = {"ltp": round(ltp,2), "chg_pts": pts,
-                                     "chg_pct": pct,
-                                     "high": round(q.get("high",0),2),
-                                     "low":  round(q.get("low",0),2),
-                                     "prev_close": round(pc,2)}
-                vq = qs.get(config.VIX_SYMBOL, {})
-                if vq.get("ltp", 0) > 0:
-                    last["vix"] = {"ltp": round(vq["ltp"], 2)}
+            fresh = _fetch_free_quotes()
+            for key in ("nifty", "sensex", "vix"):
+                if fresh.get(key):
+                    last[key] = fresh[key]
             with open(QUOTES_FILE, "w") as f:
                 json.dump({**last, "market_open": scanner._market_open(),
                            "updated_at": datetime.now().isoformat()}, f)
         except Exception as e:
             log.debug(f"Fast quotes error: {e}")
-        time.sleep(5)
+        time.sleep(3)
 
 
 def run_bias_updater(fyers):
@@ -207,27 +262,17 @@ def main():
     time.sleep(1.2)
 
     # 2. Write initial quotes immediately so dashboard shows data on open
-    log.info("Writing initial quotes...")
+    log.info("Writing initial quotes (NSE + yfinance)...")
     try:
-        qs = scanner.fetch_quotes(fyers, INDEX_SYMS, batch_size=10, delay=0.2)
         init = {
             "nifty":  {"ltp": 0, "chg_pts": 0, "chg_pct": 0, "high": 0, "low": 0},
             "sensex": {"ltp": 0, "chg_pts": 0, "chg_pct": 0, "high": 0, "low": 0},
             "vix":    {"ltp": 0},
         }
-        for sym, key in [(config.NIFTY_SYMBOL,"nifty"),(config.SENSEX_SYMBOL,"sensex")]:
-            q = qs.get(sym, {})
-            raw_ltp = q.get("ltp", 0)
-            pc      = q.get("prev_close", 0)
-            ltp     = raw_ltp if raw_ltp > 0 else pc  # fallback to prev_close after close
-            if ltp > 0:
-                pts = round(ltp-pc,2) if pc>0 else 0
-                pct = round((pts/pc*100) if pc>0 else 0,2)
-                init[key] = {"ltp": round(ltp,2), "chg_pts": pts, "chg_pct": pct,
-                             "high": round(q.get("high",0),2), "low": round(q.get("low",0),2),
-                             "prev_close": round(pc,2)}
-        vq = qs.get(config.VIX_SYMBOL, {})
-        if vq.get("ltp", 0) > 0: init["vix"] = {"ltp": round(vq["ltp"],2)}
+        fresh = _fetch_free_quotes()
+        for key in ("nifty", "sensex", "vix"):
+            if fresh.get(key):
+                init[key] = fresh[key]
         is_open = scanner._market_open()
         with open(QUOTES_FILE, "w") as f:
             json.dump({**init, "market_open": is_open,
@@ -240,7 +285,7 @@ def main():
     webbrowser.open(f"http://localhost:{config.SERVER_PORT}")
 
     # 4. Start fast-quotes thread
-    threading.Thread(target=run_fast_quotes, args=(fyers,), daemon=True).start()
+    threading.Thread(target=run_fast_quotes, daemon=True).start()
 
     # 5. Run initial full scan (blocks for ~8-10 min due to rate-limit delays)
     log.info("Running initial scan...")
@@ -258,6 +303,8 @@ def main():
     threading.Thread(target=strategy_hougaard.run_hougaard_loop, args=(fyers, False), daemon=True).start()  # Sensex
     threading.Thread(target=run_end_of_day_cleanup, daemon=True).start()
     threading.Thread(target=news_fetcher.run_news_loop, daemon=True).start()
+    # TradingView index feed — 3s refresh for Nifty, Sensex, VIX, GIFT Nifty
+    threading.Thread(target=tv_provider.run_tv_loop, daemon=True).start()
     # Analytics engine — gets fyers from a global set after login
     _fyers_ref = [fyers]  # mutable container so analytics loop can read updated token
     threading.Thread(target=analytics.run_analytics_loop, args=(lambda: _fyers_ref[0],), daemon=True).start()
