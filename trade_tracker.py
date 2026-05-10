@@ -73,7 +73,7 @@ def register_trade(symbol, direction, strike, entry, sl_price, tgt_price, setup,
                    given_at=None, expiry=None, expiry_date=None, sector=None, extra=None):
     """
     Register a new trade. No-op if this stock already has a trade today.
-    Stores all extra fields needed for the lock mechanism.
+    Returns the trade key (str) if newly registered, None if skipped (already exists).
     """
     trades = _load_active()
     key    = _trade_key(symbol, strike)
@@ -85,26 +85,28 @@ def register_trade(symbol, direction, strike, entry, sl_price, tgt_price, setup,
             return  # one trade per stock per day
     if key not in trades:
         record = {
-            "symbol":      symbol,
-            "direction":   direction,
-            "strike":      strike,
-            "setup":       setup,
-            "entry":       entry,
-            "sl_price":    sl_price,
-            "tgt_price":   tgt_price,
-            "given_at":    given_at or datetime.now().strftime("%H:%M"),
-            "date":        today,
-            "expiry":      expiry or "",
-            "expiry_date": expiry_date or "",
-            "sector":      sector or "",
-            "status":      "ACTIVE",
-            "hit_at":      None,
+            "symbol":        symbol,
+            "direction":     direction,
+            "strike":        strike,
+            "setup":         setup,
+            "entry":         entry,
+            "sl_price":      sl_price,
+            "tgt_price":     tgt_price,
+            "given_at":      given_at or datetime.now().strftime("%H:%M"),
+            "registered_at": datetime.now().isoformat(),
+            "date":          today,
+            "expiry":        expiry or "",
+            "expiry_date":   expiry_date or "",
+            "sector":        sector or "",
+            "status":        "ACTIVE",
+            "hit_at":        None,
         }
         if extra:
             record.update(extra)  # store all extra fields for lock retrieval
         trades[key] = record
         _save_active(trades)
         log.info(f"Trade registered: {symbol} {strike} entry:{entry} sl:{sl_price} tgt:{tgt_price}")
+        return key  # newly registered — caller can use this as a unique trade ID
 
 
 def update_status(symbol, strike, current_ltp):

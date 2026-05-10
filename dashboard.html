@@ -307,12 +307,14 @@ body{font-family:var(--font);background:var(--bg);color:var(--txt);-webkit-font-
 <div class="page on" id="page-overview">
   <div class="idx-grid">
     <div class="idx-card-wrap">
-      <div class="idx-label-row"><span class="idx-label">Nifty 50</span><span class="idx-badge badge-live">5s</span><span class="idx-badge badge-bias">Bias 15m</span></div>
+      <div class="idx-label-row"><span class="idx-label">Nifty 50</span><span class="idx-badge badge-live">TV 3s</span><span class="idx-badge badge-bias">Bias 15m</span></div>
       <div id="ov-nifty-card" class="idx-card nifty"><div class="scan-msg">Loading...</div></div>
+      <div id="tv-nifty-age" style="font-size:9px;margin-top:3px;text-align:right;color:var(--txt3)"></div>
     </div>
     <div class="idx-card-wrap">
-      <div class="idx-label-row"><span class="idx-label">Sensex</span><span class="idx-badge badge-live">5s</span><span class="idx-badge badge-bias">Bias 15m</span></div>
+      <div class="idx-label-row"><span class="idx-label">Sensex</span><span class="idx-badge badge-live">TV 3s</span><span class="idx-badge badge-bias">Bias 15m</span></div>
       <div id="ov-sensex-card" class="idx-card sensex"><div class="scan-msg">Loading...</div></div>
+      <div id="tv-sensex-age" style="font-size:9px;margin-top:3px;text-align:right;color:var(--txt3)"></div>
     </div>
   </div>
 
@@ -324,11 +326,11 @@ body{font-family:var(--font);background:var(--bg);color:var(--txt);-webkit-font-
         GIFT Nifty <i class="info-btn" onmouseenter="showTip(this,'Pre-market signal from SGX/GIFT Nifty. Shows expected gap up or down before 9:15 AM.')" onmouseleave="hideTip()">i</i>
       </div>
       <div class="gift-card" id="gift-nifty-body">
-        <div><div class="gift-price" id="gift-price">--</div><div style="font-size:10px;color:var(--txt3);margin-top:3px">GIFT Nifty</div></div>
+        <div><div class="gift-price" id="gift-price">--</div><div style="font-size:10px;color:var(--txt3);margin-top:3px">GIFT Nifty (TV)</div></div>
         <div style="text-align:right">
           <div class="gift-gap" id="gift-gap">-- pts</div>
           <div style="font-size:10px;color:var(--txt3);margin-top:2px" id="gift-signal">--</div>
-          <div style="font-size:9px;color:var(--txt3);margin-top:2px" id="gift-expiry">-- days to expiry</div>
+          <div style="font-size:9px;margin-top:4px;color:var(--txt3)" id="tv-gift-age">--</div>
         </div>
       </div>
     </div>
@@ -552,35 +554,107 @@ body{font-family:var(--font);background:var(--bg);color:var(--txt);-webkit-font-
 
 // ─── STATE ─────────────────────────────────────────────────────────────────────
 var stocks=[], news=[], bias={}, executedTrades=[], nonExecutedTrades=[];
-var tradeMap={}, newTradeSymbols={}, prevSymbols={};
+var tradeMap={}, newTradeSymbols={};
 var ovFilter='all', rdrFilter='all', newsFilter='all';
 var execFilter='all', nonExecFilter='all';
 var tradeTab='active';
 var expandedSym=null;  // FIX 5: which row is expanded in radar
-var prevNifty=0, prevSensex=0, prevCount=0;
-var dataReady=false, scanCD=300, notifOk=false;
+var prevNifty=0, prevSensex=0;
+var dataReady=false, scanCD=300;
 var modalTrade=null, modalMode=null;
 
-// Notification System
+// ─── NOTIFICATION SYSTEM ──────────────────────────────────────────────────────
 var notifOk=false;
-(function(){
+// notifiedTradeKeys: Set of trade keys (SYMBOL_STRIKE_DATE) already alerted this session.
+// Populated silently on first load so existing trades don't spam on page open.
+var notifiedTradeKeys=new Set();
+var notifSeeded=false; // true after first fetchFull populates the set
+
+(function requestNotificationPermission(){
   if(!window.Notification)return;
   if(Notification.permission==='granted'){notifOk=true;return;}
   if(Notification.permission==='default'){
-    // Request on first click
+    // Try immediately — succeeds on some browsers; falls back to first-click for others
+    Notification.requestPermission().then(function(p){notifOk=(p==='granted');});
     document.addEventListener('click',function fn(){
       Notification.requestPermission().then(function(p){notifOk=(p==='granted');});
       document.removeEventListener('click',fn);
     },{once:true});
   }
 })();
-function sendNotif(title,body){
-  if(!notifOk)return;
+
+function playPing(){
   try{
-    var n=new Notification(title,{body:body,icon:'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📈</text></svg>',requireInteraction:true});
-    setTimeout(function(){n.close();},15000);
+    var ctx=new(window.AudioContext||window.webkitAudioContext)();
+    [523,880].forEach(function(freq,i){
+      var o=ctx.createOscillator(),g=ctx.createGain();
+      o.connect(g);g.connect(ctx.destination);
+      o.frequency.value=freq;o.type='sine';
+      var t=ctx.currentTime+i*0.18;
+      g.gain.setValueAtTime(0,t);
+      g.gain.linearRampToValueAtTime(0.22,t+0.015);
+      g.gain.exponentialRampToValueAtTime(0.001,t+0.45);
+      o.start(t);o.stop(t+0.45);
+    });
   }catch(e){}
 }
+
+function sendNotif(title,body){
+  playPing();
+  if(!notifOk)return;
+  try{
+    var n=new Notification(title,{
+      body:body,
+      icon:'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📈</text></svg>',
+      requireInteraction:true
+    });
+    setTimeout(function(){n.close();},20000);
+  }catch(e){}
+}
+
+function _checkNewTrades(todayTrades,stocks){
+  var keys=Object.keys(todayTrades||{});
+  if(!notifSeeded){
+    // First load — silently seed the set so we don't notify about pre-existing trades
+    keys.forEach(function(k){notifiedTradeKeys.add(k);});
+    // Also catch is_new flags (trades found during current scan cycle before page load)
+    (stocks||[]).forEach(function(s){if(s.is_new)notifiedTradeKeys.add(s.symbol+'_seeded');});
+    notifSeeded=true;
+    return;
+  }
+  var fresh=[];
+  keys.forEach(function(k){
+    if(!notifiedTradeKeys.has(k)){
+      notifiedTradeKeys.add(k);
+      var t=todayTrades[k];
+      fresh.push(t);
+    }
+  });
+  // Also pick up is_new flag from stocks that haven't been tracked yet
+  (stocks||[]).forEach(function(s){
+    if(s.is_new&&!notifiedTradeKeys.has('isnew_'+s.symbol+'_'+s.date)){
+      notifiedTradeKeys.add('isnew_'+s.symbol+'_'+s.date);
+      var already=fresh.some(function(f){return f.symbol===s.symbol;});
+      if(!already)fresh.push(s);
+    }
+  });
+  if(!fresh.length)return;
+  // Show badge on Radar tab
+  var rt=document.getElementById('radar-tab');
+  if(rt&&!rt.querySelector('.nbadge')){
+    var b=document.createElement('span');b.className='nbadge';b.textContent=fresh.length;rt.appendChild(b);
+  }
+  // Mark rows for blink highlight + fire notifications (capped at 3)
+  fresh.slice(0,3).forEach(function(t){
+    var sym=t.symbol||'';
+    newTradeSymbols[sym]=true;
+    var strike=t.strike||'';
+    var entry=t.entry||t.option_ask||0;
+    var body=strike+'\nEntry: ₹'+entry+' | SL: ₹'+(t.sl_price||0)+' | Tgt: ₹'+(t.tgt_price||0);
+    sendNotif('📈 NEW TRADE — '+sym,body);
+  });
+}
+
 function clearBadge(){var b=document.querySelector('#radar-tab .nbadge');if(b)b.remove();}
 
 // Clock
@@ -667,7 +741,18 @@ function fetchQuotes(){
     if(q.updated_at){var s=Math.round((Date.now()-new Date(q.updated_at).getTime())/1000);document.getElementById('q-age').textContent=s+'s ago';}
   }).catch(function(){});
 }
-fetchQuotes();setInterval(fetchQuotes,5000);
+fetchQuotes();setInterval(fetchQuotes,3000);
+
+// ─── NEWS (independent of radar scan) ────────────────────────────────────────
+function fetchNews(){
+  fetch('/api/news').then(function(r){return r.json();}).then(function(d){
+    if(!d||!d.articles||!d.articles.length)return;
+    news=d.articles;
+    var nc=document.getElementById('m-news');if(nc)nc.textContent=news.length;
+    renderOvNews();renderNews();
+  }).catch(function(){});
+}
+fetchNews();setInterval(fetchNews,180000);
 
 function updatePill(pfx,d){
   if(!d)return;
@@ -739,24 +824,9 @@ fetchAllHistory();setInterval(fetchAllHistory,60000);
 function fetchFull(){
   fetch('/api/data').then(function(r){return r.json();}).then(function(data){
     var newS=data.stocks||[];
-    // FIX 2: Detect new trades immediately
-    var curSymbols={};
-    newS.forEach(function(s){curSymbols[s.symbol]=true;tradeMap[s.symbol]=s;});
-    var addedSyms=[];
-    Object.keys(curSymbols).forEach(function(sym){
-      if(!prevSymbols[sym]&&prevCount>0){addedSyms.push(sym);newTradeSymbols[sym]=true;}
-    });
-    if(addedSyms.length>0){
-      var newTrades=newS.filter(function(s){return curSymbols[s.symbol]&&!prevSymbols[s.symbol];}).slice(0,3);
-      var notifBody=newTrades.map(function(s){
-        return s.symbol+' '+s.strike+'\nEntry: '+fr(s.entry)+' | Target: '+fr(s.tgt_price)+' | SL: '+fr(s.sl_price);
-      }).join('\n\n');
-      sendNotif('🔔 NEW TRADE FOUND',notifBody);
-      var rt=document.getElementById('radar-tab');
-      if(rt&&!rt.querySelector('.nbadge')){var b=document.createElement('span');b.className='nbadge';b.textContent=addedSyms.length;rt.appendChild(b);}
-    }
-    prevSymbols=curSymbols;prevCount=newS.length;
-    stocks=newS;news=data.news||[];
+    newS.forEach(function(s){tradeMap[s.symbol]=s;});
+    _checkNewTrades(data.today_trades,newS);
+    stocks=newS;if(data.news&&data.news.length)news=data.news;
     var meta=data.meta||{};
     var isOpen=meta.market_open===true;
     var pill2=document.getElementById('mkt-pill');
@@ -773,14 +843,35 @@ function fetchFull(){
     set('m-sc',meta.sc);set('m-sb',meta.sb);set('m-news',meta.news_count);
     set('vix-env',meta.vix_env);
     if(meta.scanned_at){var d=new Date(meta.scanned_at);set('last-scan',pad(d.getHours())+':'+pad(d.getMinutes()));}
-    buildOvCard('nifty',data.nifty||{});buildOvCard('sensex',data.sensex||{});
+    if((data.nifty&&data.nifty.ltp)||!document.getElementById('card-nifty-ltp'))buildOvCard('nifty',data.nifty||{});
+    if((data.sensex&&data.sensex.ltp)||!document.getElementById('card-sensex-ltp'))buildOvCard('sensex',data.sensex||{});
     renderOvStocks();renderRadar();renderOvNews();renderNews();
-    if(newS.length>0||news.length>0){if(!dataReady){dataReady=true;scanCD=300;set('next-scan','5:00');}}
+    if(!dataReady){dataReady=true;scanCD=300;set('next-scan','5:00');}
   }).catch(function(e){console.error('fetchFull:',e);});
 }
 fetchFull();
-// FIX 2: Poll every 5s until data ready (was 10s)
+// Fast-poll until first data loads, then stop
 setInterval(function(){if(!dataReady)fetchFull();},5000);
+// Ongoing 30s sync — catches scans that complete between SSE events
+setInterval(fetchFull,30000);
+
+// ─── SSE — instant trade push ─────────────────────────────────────────────────
+(function(){
+  function connect(){
+    var es=new EventSource('/api/stream');
+    es.onmessage=function(e){
+      try{
+        var d=JSON.parse(e.data);
+        if(d.type==='scan_update'){fetchFull();}
+      }catch(_){}
+    };
+    es.onerror=function(){
+      es.close();
+      setTimeout(connect,5000); // reconnect after 5s on drop
+    };
+  }
+  connect();
+})();
 
 // ─── INDEX CARDS ──────────────────────────────────────────────────────────────
 function buildOvCard(which,idx){
@@ -880,7 +971,7 @@ function renderOvNews(){
     var ibg=n.impact==='HIGH'?'rgba(52,199,89,0.12)':n.impact==='MEDIUM'?'rgba(255,149,0,0.1)':'rgba(148,163,184,0.08)';
     var ifg=n.impact==='HIGH'?'#34c759':n.impact==='MEDIUM'?'#ff9500':'#94a3b8';
     var link=(n.link||'#').replace(/'/g,'%27');
-    return '<div class="ov-news-card" onclick="window.open(''+link+'','_blank')">'+
+    return '<div class="ov-news-card" onclick="window.open(\''+link+'\',\'_blank\')">'+
       '<div class="nc-src">'+(n.source||'\u2014')+'</div>'+
       '<div class="nc-headline">'+(n.headline||'')+'</div>'+
       '<div class="nc-meta">'+
@@ -1188,7 +1279,6 @@ var analyticsData = {};
 function fetchAnalytics() {
   fetch('/api/analytics').then(function(r){return r.json();}).then(function(d){
     analyticsData = d || {};
-    renderGiftNifty(d.gift_nifty || {});
     renderMarketBreadth(d.market_breadth || {});
     renderSectorHeatmap(d.sector_heatmap || []);
     renderIvRanks(d.iv_ranks || {});
@@ -1197,22 +1287,80 @@ function fetchAnalytics() {
 fetchAnalytics();
 setInterval(fetchAnalytics, 60000);
 
-function renderGiftNifty(g) {
-  if (!g.price) return;
-  var prEl=document.getElementById('gift-price'),gpEl=document.getElementById('gift-gap');
-  var sgEl=document.getElementById('gift-signal'),exEl=document.getElementById('gift-expiry');
-  if(prEl)prEl.textContent=fp(g.price);
-  if(gpEl){
-    var up=g.gap_pts>=0;
-    gpEl.textContent=(up?'+':'')+fp(g.gap_pts)+' pts ('+(up?'+':'')+g.gap_pct+'%)';
-    gpEl.style.color=up?'var(--green)':'var(--red)';
-  }
-  if(sgEl){
-    sgEl.textContent=g.signal==='GAP_UP'?'▲ GAP UP':g.signal==='GAP_DOWN'?'▼ GAP DOWN':'≈ FLAT';
-    sgEl.style.color=g.signal==='GAP_UP'?'var(--green)':g.signal==='GAP_DOWN'?'var(--red)':'var(--txt3)';
-  }
-  if(exEl&&g.days_to_exp!==undefined)exEl.textContent=g.days_to_exp+' days to expiry';
+// ─── TV INDEX FEED ────────────────────────────────────────────────────────────
+function _tvAgeSeconds(iso){
+  if(!iso)return Infinity;
+  return(Date.now()-new Date(iso).getTime())/1000;
 }
+function _tvAgeColor(secs){
+  if(secs<60) return'var(--green)';
+  if(secs<300)return'var(--txt3)';
+  return'var(--orange)';
+}
+function _tvAgeLabel(iso){
+  var secs=_tvAgeSeconds(iso);
+  if(!isFinite(secs))return'--';
+  var d=new Date(iso);
+  var hh=String(d.getHours()).padStart(2,'0'),mm=String(d.getMinutes()).padStart(2,'0'),ss=String(d.getSeconds()).padStart(2,'0');
+  return'Updated '+hh+':'+mm+':'+ss;
+}
+function _setTvAge(elId,iso){
+  var el=document.getElementById(elId);if(!el)return;
+  el.textContent=_tvAgeLabel(iso);
+  el.style.color=_tvAgeColor(_tvAgeSeconds(iso));
+}
+
+function fetchIndices(){
+  fetch('/api/indices').then(function(r){return r.json();}).then(function(d){
+    if(!d)return;
+
+    // ── Nifty & Sensex ────────────────────────────────────────────────────────
+    // If the card DOM hasn't been built yet (scanner hasn't run), build it now
+    // using TV data so prices show immediately without waiting for the first scan.
+    function _applyTvIndex(which,tv,pill){
+      if(!tv||!tv.price)return;
+      var cardData={ltp:tv.price,chg_pts:tv.change,chg_pct:tv.change_pct,
+                    high:tv.high,low:tv.low,prev_close:tv.prev_close,open:tv.prev_close,vwap:0};
+      if(!document.getElementById('card-'+which+'-ltp')){
+        buildOvCard(which,cardData);
+      } else {
+        updateCardLive(which,cardData);
+      }
+      updatePill(pill,{ltp:tv.price,chg_pts:tv.change,chg_pct:tv.change_pct});
+    }
+    _applyTvIndex('nifty',d.nifty,'n');
+    _applyTvIndex('sensex',d.sensex,'s');
+    if(d.nifty&&d.nifty.price)_setTvAge('tv-nifty-age',d.nifty.last_updated);
+    if(d.sensex&&d.sensex.price)_setTvAge('tv-sensex-age',d.sensex.last_updated);
+
+    // ── VIX ──────────────────────────────────────────────────────────────────
+    if(d.vix&&d.vix.price){
+      var vEl=document.getElementById('vix-top');
+      if(vEl)vEl.textContent=d.vix.price.toFixed(2);
+    }
+
+    // ── GIFT Nifty ────────────────────────────────────────────────────────────
+    if(d.gift_nifty&&d.gift_nifty.price){
+      var g=d.gift_nifty;
+      var prEl=document.getElementById('gift-price'),gpEl=document.getElementById('gift-gap');
+      var sgEl=document.getElementById('gift-signal');
+      if(prEl)prEl.textContent=fp(g.price);
+      if(gpEl){
+        var up=g.change>=0;
+        gpEl.textContent=(up?'+':'')+fp(g.change)+' pts ('+(up?'+':'')+g.change_pct+'%)';
+        gpEl.style.color=up?'var(--green)':'var(--red)';
+      }
+      if(sgEl){
+        var sig=g.change_pct>0.3?'▲ GAP UP':g.change_pct<-0.3?'▼ GAP DOWN':'≈ FLAT';
+        sgEl.textContent=sig;
+        sgEl.style.color=g.change_pct>0.3?'var(--green)':g.change_pct<-0.3?'var(--red)':'var(--txt3)';
+      }
+      _setTvAge('tv-gift-age',g.last_updated);
+    }
+  }).catch(function(){});
+}
+fetchIndices();
+setInterval(fetchIndices,3000);
 
 function renderMarketBreadth(b) {
   if(!b.advance&&b.advance!==0)return;

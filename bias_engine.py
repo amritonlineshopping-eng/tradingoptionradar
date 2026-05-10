@@ -108,7 +108,6 @@ def compute_bias(fyers, sym_str, is_nifty=True):
         closes = df15["close"].tolist()
         highs  = df15["high"].tolist()
         lows   = df15["low"].tolist()
-        vols   = df15["volume"].tolist()
 
         # VWAP from intraday (use today's candles if available)
         today_df = df15[df15["datetime"].dt.date == date.today()] if not df15.empty else df15

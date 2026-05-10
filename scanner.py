@@ -1317,10 +1317,10 @@ def score_stock(fyers, sym, quote, df, vix):
         "vwap":        round(vwap, 2),
         "in_window":   kz.get("in_kz", False),
     }
-    trade_tracker.register_trade(display, direction, strike_str, entry, sl_price, tgt_price,
-                                  name, given_at, expiry=fmt_exp(expiry),
-                                  expiry_date=expiry.isoformat(),
-                                  sector=sector, extra=extra_fields)
+    _new_key = trade_tracker.register_trade(display, direction, strike_str, entry, sl_price, tgt_price,
+                                             name, given_at, expiry=fmt_exp(expiry),
+                                             expiry_date=expiry.isoformat(),
+                                             sector=sector, extra=extra_fields)
     status_label = trade_tracker.get_status_label(display, strike_str) or f"Given at {given_at}"
 
     extra = {}
@@ -1343,6 +1343,7 @@ def score_stock(fyers, sym, quote, df, vix):
         "vwap": round(vwap, 2), "in_window": kz.get("in_kz", False),
         "signal_time": given_at, "date": date.today().isoformat(),
         "status_label": status_label,
+        "is_new": bool(_new_key),  # True only on first registration — cleared next scan
         "scanned_at": datetime.now().isoformat(), **extra,
     }
 
@@ -1461,12 +1462,13 @@ def scan_all(fyers):
             # FIX 2: Save partial cache immediately so dashboard shows new trade NOW
             # without waiting for the full scan to complete
             _save_partial(results, nifty, sensex, news, vix, t0)
-            # Notify server of new trade for instant dashboard push
-            try:
-                import server
-                server._notify_new_trade(result.get('symbol', 'UNKNOWN'), result)
-            except Exception as e:
-                log.debug(f"Could not notify server of new trade: {e}")
+            # Notify server only on first registration (is_new) for instant dashboard push
+            if result.get("is_new"):
+                try:
+                    import server
+                    server._notify_new_trade(result.get('symbol', 'UNKNOWN'), result)
+                except Exception as e:
+                    log.debug(f"Could not notify server of new trade: {e}")
         time.sleep(0.25)
 
     # FIX #6: Add index trades to overview stocks list

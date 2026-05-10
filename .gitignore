@@ -3,3 +3,12 @@ __pycache__/
 *.pyc
 *.log
 .DS_Store
+
+# Sensitive credentials — never push these
+access_token.txt
+config.py
+
+# Runtime data files
+*.json
+!package.json
+!package-lock.json

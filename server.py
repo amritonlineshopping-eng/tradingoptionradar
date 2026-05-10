@@ -11,20 +11,52 @@ Endpoints:
   POST /api/update_history → update an existing history record
   GET  /api/health    → system status
 """
-import os, json
+import os, json, asyncio, threading
 from datetime import datetime
-from fastapi import FastAPI, Response, Body
-
-from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi import FastAPI, Response, Body, Request
+from fastapi.responses import HTMLResponse, JSONResponse, StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 import config, scanner, trade_tracker, learner, strategy_hougaard, analytics
 
 app = FastAPI()
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
 
-BASE_DIR    = os.path.dirname(os.path.abspath(__file__))
-QUOTES_FILE = os.path.join(BASE_DIR, "index_quotes.json")
-BIAS_FILE   = os.path.join(BASE_DIR, "index_bias.json")
+BASE_DIR      = os.path.dirname(os.path.abspath(__file__))
+QUOTES_FILE   = os.path.join(BASE_DIR, "index_quotes.json")
+BIAS_FILE     = os.path.join(BASE_DIR, "index_bias.json")
+NEWS_FILE     = os.path.join(BASE_DIR, "market_news.json")
+TV_STATE_FILE = os.path.join(BASE_DIR, "index_state.json")
+
+# ─── SSE BROADCAST ────────────────────────────────────────────────────────────
+_sse_loop:   asyncio.AbstractEventLoop = None
+_sse_queues: list                      = []
+_sse_lock                              = threading.Lock()
+
+@app.on_event("startup")
+async def _capture_loop():
+    global _sse_loop
+    _sse_loop = asyncio.get_event_loop()
+
+def _broadcast(payload: dict):
+    """Push a scan-update event to every connected SSE client. Thread-safe."""
+    if _sse_loop is None:
+        return
+    msg = json.dumps(payload, default=str)
+    with _sse_lock:
+        for q in list(_sse_queues):
+            try:
+                _sse_loop.call_soon_threadsafe(q.put_nowait, msg)
+            except Exception:
+                pass
+
+def _notify_new_trade(trade_symbol: str, trade_data: dict):
+    """Called by scanner when a new trade is found. Triggers instant dashboard refresh."""
+    _broadcast({
+        "type":   "scan_update",
+        "symbol": trade_symbol,
+        "score":  trade_data.get("score", 0),
+        "setup":  trade_data.get("setup", ""),
+    })
 
 
 @app.get("/", response_class=HTMLResponse)
@@ -103,6 +135,53 @@ async def get_quotes():
             "updated_at": None, "market_open": scanner._market_open()
         })
     with open(QUOTES_FILE) as f:
+        return JSONResponse(json.load(f))
+
+
+@app.get("/api/indices")
+async def get_indices():
+    """Live index data from TradingView (Nifty, Sensex, VIX, GIFT Nifty)."""
+    if not os.path.exists(TV_STATE_FILE):
+        return JSONResponse({"nifty": {}, "sensex": {}, "vix": {}, "gift_nifty": {}})
+    with open(TV_STATE_FILE) as f:
+        return JSONResponse(json.load(f))
+
+
+@app.get("/api/stream")
+async def sse_stream(request: Request):
+    """Server-Sent Events stream. Dashboard subscribes and gets instant trade alerts."""
+    q: asyncio.Queue = asyncio.Queue(maxsize=100)
+    with _sse_lock:
+        _sse_queues.append(q)
+
+    async def generator():
+        try:
+            while True:
+                if await request.is_disconnected():
+                    break
+                try:
+                    msg = await asyncio.wait_for(q.get(), timeout=25)
+                    yield f"data: {msg}\n\n"
+                except asyncio.TimeoutError:
+                    yield ": ping\n\n"  # keepalive — stops proxies from closing the connection
+        finally:
+            with _sse_lock:
+                if q in _sse_queues:
+                    _sse_queues.remove(q)
+
+    return StreamingResponse(
+        generator(),
+        media_type="text/event-stream",
+        headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no",
+                 "Connection": "keep-alive"},
+    )
+
+
+@app.get("/api/news")
+async def get_news():
+    if not os.path.exists(NEWS_FILE):
+        return JSONResponse({"articles": [], "updated_at": None, "count": 0})
+    with open(NEWS_FILE) as f:
         return JSONResponse(json.load(f))
 
 
@@ -212,11 +291,6 @@ async def get_hougaard_active():
 
 
 
-# ─── INSTANT TRADE NOTIFICATIONS ──────────────────────────────────────────
-# Removed complex SSE - trades now sync via regular data fetch polling
-def _notify_new_trade(trade_symbol, trade_data):
-    """Called whenever a new trade is detected. Currently used for logging."""
-    pass
 
 
 
@@ -251,7 +325,63 @@ async def get_gift_nifty():
 
 
 @app.get("/api/health")
-
 async def health():
     return {"status": "ok", "time": datetime.now().isoformat(),
             "market_open": scanner._market_open()}
+
+
+# ─── TEST TRIGGER (development only) ──────────────────────────────────────────
+@app.get("/api/test-trigger")
+async def test_trigger():
+    """
+    Injects a fake trade into trades_state.json and broadcasts an SSE event so
+    the dashboard fires its notification + sound. No Fyers login required.
+    Safe to call repeatedly — wipes the previous MOCK trade each time.
+    """
+    from datetime import date as _date
+
+    MOCK_SYM    = "MOCK-RELIANCE"
+    MOCK_STRIKE = "2500 CE"
+    today       = _date.today().isoformat()
+
+    # Remove any leftover mock trade so every run produces a fresh key
+    active = trade_tracker._load_active()
+    stale  = [k for k in list(active.keys()) if "MOCK" in k]
+    for k in stale:
+        del active[k]
+    trade_tracker._save_active(active)
+
+    # Register the mock trade — returns the new key, or None if somehow still locked
+    key = trade_tracker.register_trade(
+        symbol      = MOCK_SYM,
+        direction   = "BULL",
+        strike      = MOCK_STRIKE,
+        entry       = 85.0,
+        sl_price    = 60.0,
+        tgt_price   = 140.0,
+        setup       = "BOS + EMA Confluence",
+        given_at    = datetime.now().strftime("%H:%M"),
+        expiry      = "05 Jun",
+        expiry_date = today,
+        sector      = "Test",
+        extra       = {
+            "score":      5.5,
+            "option_type": "CE",
+            "vol_surge":  2.1,
+            "rr_ratio":   "1:2",
+            "iv_rank":    45,
+            "sl_amt":     25.0,
+            "tgt_amt":    55.0,
+            "oi_signal":  "Long Buildup",
+            "oi_dir":     "BULL",
+        },
+    )
+
+    if not key:
+        return JSONResponse({"ok": False, "msg": "Mock trade already exists and could not be cleared."}, status_code=500)
+
+    # Broadcast SSE → dashboard calls fetchFull() → sees new key → notification fires
+    _notify_new_trade(MOCK_SYM, {"score": 5.5, "setup": "BOS + EMA Confluence"})
+
+    return JSONResponse({"ok": True, "key": key,
+                         "msg": f"Mock trade injected: {MOCK_SYM} {MOCK_STRIKE}. Watch the dashboard."})
